@@ -1,12 +1,14 @@
 import os
 
+from flask import Flask, jsonify, redirect, request
+
 import wolframalpha
-from flask import Flask, redirect, request, jsonify
 
 API_KEY = os.getenv('API_KEY')
 TOKEN = os.getenv('TOKEN')
 
 app = Flask(__name__)
+
 
 @app.route("/", methods=['POST'])
 def main():
@@ -18,7 +20,10 @@ def main():
     query = request.form['text'].split(' ', 1)[1]
     client = wolframalpha.Client(API_KEY)
     res = client.query(query)
+    if len(res.pods) == 0:
+        return jsonify({'text': "Sorry, I couldn't find any relevant information for you."})
     return jsonify({'text': next(res.results).text})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

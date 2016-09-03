@@ -20,9 +20,14 @@ def main():
     query = request.form['text'].split(' ', 1)[1]
     client = wolframalpha.Client(API_KEY)
     res = client.query(query)
+
     if len(res.pods) == 0:
         return jsonify({'text': "Sorry, I couldn't find any relevant information for you."})
-    return jsonify({'text': next(res.results).text})
+    try:
+        response = next(res.results).text
+    except StopIteration:
+        response = "Sorry, I couldn't get a result for that query."
+    return jsonify({'text': response})
 
 
 if __name__ == "__main__":

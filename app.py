@@ -14,7 +14,8 @@ def main():
         return 'Missing configuration for API_KEY and/or TOKEN', 500
     if request.form['token'] != TOKEN:
         return 'Unauthorized', 401
-    query = request.form['text']
+    # https://docs.python.org/3/library/stdtypes.html#str.split
+    query = request.form['text'].split(' ', 1)[1]
     client = wolframalpha.Client(API_KEY)
     res = client.query(query)
     return jsonify({'text': next(res.results).text})

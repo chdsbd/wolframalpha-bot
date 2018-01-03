@@ -6,6 +6,7 @@ import wolframalpha
 
 API_KEY = os.getenv('API_KEY')
 TOKEN = os.getenv('TOKEN')
+DEBUG = os.getenv('DEBUG', False)
 
 app = Flask(__name__)
 
@@ -34,4 +35,4 @@ def main():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=DEBUG)
